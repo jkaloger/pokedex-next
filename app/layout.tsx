@@ -11,11 +11,11 @@ export default function RootLayout({
   quickview,
 }: Readonly<{
   children: React.ReactNode;
-  pokemon: React.ReactNode;
+  quickview: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="dark">
         <div id="modal-root" />
         {quickview}
         {children}
