@@ -6,7 +6,7 @@ import { CardContent, Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { HeartFilledIcon } from '@radix-ui/react-icons';
 
-const typeBgMap = {
+const typeBgMap: Record<string, string> = {
 	grass: 'bg-green-600',
 	poison: 'bg-purple-600',
 	water: 'bg-blue-600',
