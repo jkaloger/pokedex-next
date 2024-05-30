@@ -6,6 +6,12 @@ import { CardContent, Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { HeartFilledIcon } from '@radix-ui/react-icons';
 
+const typeBgMap = {
+	grass: 'bg-green-600',
+	poison: 'bg-purple-600',
+	water: 'bg-blue-600',
+};
+
 interface Props {
 	id: string;
 }
@@ -22,9 +28,12 @@ export const PokemonDetails = async ({ id }: Props) => {
 				</Avatar>
 				<div className="text-center space-y-1">
 					<h3 className="text-2xl font-bold capitalize">{pokemon.name}</h3>
-					{pokemon.types.map((type) => (
-						<p key={type.slot} className="capitalize rounded-sm text-sm bg-blue-600 text-white">
-							{type.type.name}
+					{pokemon.types.map(({ type }) => (
+						<p
+							key={'type-' + type.name}
+							className={cn('capitalize rounded-sm text-sm text-white', typeBgMap[type.name])}
+						>
+							{type.name}
 						</p>
 					))}
 				</div>
