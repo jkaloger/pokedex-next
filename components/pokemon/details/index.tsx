@@ -22,9 +22,10 @@ const typeBgMap: Record<string, string> = {
 
 interface Props {
 	id: string;
+	showTypes?: boolean;
 }
 
-export const PokemonDetails = async ({ id }: Props) => {
+export const PokemonDetails = async ({ id, showTypes = false }: Props) => {
 	const pokemon = await getPokemonById(id);
 
 	return (
@@ -39,14 +40,15 @@ export const PokemonDetails = async ({ id }: Props) => {
 						<p className="text-xs text-black/50 dark:text-white/50">#{pokemon.id}</p>
 						<h3 className="text-2xl font-bold capitalize">{pokemon.name}</h3>
 					</div>
-					{pokemon.types.map(({ type }) => (
-						<p
-							key={'type-' + type.name}
-							className={cn('capitalize rounded-sm text-sm text-white', typeBgMap[type.name])}
-						>
-							{type.name}
-						</p>
-					))}
+					{showTypes &&
+						pokemon.types.map(({ type }) => (
+							<p
+								key={'type-' + type.name}
+								className={cn('capitalize rounded-sm text-sm text-white', typeBgMap[type.name])}
+							>
+								{type.name}
+							</p>
+						))}
 				</div>
 				<Button className="w-full flex gap-2">
 					<HeartFilledIcon /> Favourite
