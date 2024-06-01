@@ -29,7 +29,7 @@ export const PokemonDetails = async ({ id }: Props) => {
 
 	return (
 		<Card className="w-full">
-			<CardContent className="flex flex-col items-center gap-4">
+			<CardContent className="flex flex-col items-center gap-4 p-6">
 				<Avatar className={cn(['h-48 w-48 p-4', `bg-slate-300`])}>
 					<AvatarImage alt={pokemon.name} src={pokemon.sprites.front_default} />
 					<AvatarFallback>{pokemon.name[0].toUpperCase()}</AvatarFallback>

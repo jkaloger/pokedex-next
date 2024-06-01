@@ -1,22 +1,12 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Link from 'next/link';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 export const metadata: Metadata = {
   title: 'Pokedex',
   description: 'Next.JS Demo Pokedex',
 };
-
-export default function RootLayout({
-  children,
-  quickview,
-  pokemon,
-}: Readonly<{
-  children: React.ReactNode;
-  quickview: React.ReactNode;
-  pokemon: React.ReactNode;
-}>) {
+export default function RootLayout({ quickview, children }: { children: React.ReactNode; quickview: React.ReactNode }) {
   return (
     <html lang="en">
       <body className="dark">
@@ -34,17 +24,7 @@ export default function RootLayout({
             Favourites
           </Link>
         </nav>
-
-        <main className="container grid grid-cols-3 grid-rows-3 gap-5">
-          <div className="col-span-2 row-span-3">{pokemon}</div>
-          <Card className="col-span-1 row-span-1">
-            <CardContent>Home Page</CardContent>
-          </Card>
-          <Card className="col-span-1 row-span-2">
-            <CardHeader></CardHeader>
-            <CardContent>{children}</CardContent>
-          </Card>
-        </main>
+        {children}
       </body>
     </html>
   );
