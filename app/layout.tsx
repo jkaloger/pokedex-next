@@ -1,3 +1,5 @@
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import './globals.css';
 import Link from 'next/link';
@@ -9,6 +11,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ quickview, children }: { children: React.ReactNode; quickview: React.ReactNode }) {
   return (
     <html lang="en">
+      <SpeedInsights />
+      <Analytics />
       <body className="dark">
         <div id="modal-root" />
         {quickview}
