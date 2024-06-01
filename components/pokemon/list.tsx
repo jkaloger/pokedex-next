@@ -7,11 +7,11 @@ import { flagsmith } from '@/lib/features';
 import { getFlags } from '@/lib/flags';
 
 export const PokeList = async ({ page }: { page: number }) => {
+	const override = await getFlags();
 	const flags = await flagsmith.getEnvironmentFlags();
-	const showTypes = flags.isFeatureEnabled('show_types');
+	const showTypes = flags.isFeatureEnabled('show_types') || !!override?.show_types;
 	const pokemonList = await getPokemon(!isNaN(page) ? page * PAGE_SIZE : 0, PAGE_SIZE);
 
-	const override = await getFlags();
 	console.log({ override });
 	return (
 		<div className="@container">
