@@ -18,6 +18,15 @@ export const typeBgMap: Record<string, string> = {
   fairy: 'bg-pink-400 text-black',
   electric: 'bg-yellow-400 text-black',
   steel: 'bg-slate-300 text-black',
+  fighting: 'bg-red-800',
+  rock: 'bg-gray-800',
+  ghost: 'bg-violet-200 text-black',
+  psychic: 'bg-pink-900',
+  ice: 'bg-blue-300 text-black',
+  dragon: 'bg-purple-900',
+  dark: 'bg-gray-900',
+  stellar: 'bg-indigo-300 text-black',
+  unknown: 'bg-white text-black',
 };
 
 interface Props {
