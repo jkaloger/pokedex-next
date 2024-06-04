@@ -1,6 +1,9 @@
 import type { PokeAPI } from 'pokeapi-types';
 
-export const getPokemon = async (offset?: number, limit?: number): Promise<PokeAPI.NamedAPIResourceList> => {
+export const getPokemon = async (
+  offset?: number,
+  limit?: number
+): Promise<PokeAPI.NamedAPIResourceList> => {
   const url = `${process.env.POKEAPI_URL}/pokemon?offset=${offset ?? 0}&limit=${limit ?? 10}`;
   const response = await fetch(url, { cache: 'force-cache' });
   return await response.json();

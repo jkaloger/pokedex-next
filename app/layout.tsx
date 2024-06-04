@@ -8,7 +8,13 @@ export const metadata: Metadata = {
   title: 'Pokedex',
   description: 'Next.JS Demo Pokedex',
 };
-export default function RootLayout({ quickview, children }: { children: React.ReactNode; quickview: React.ReactNode }) {
+export default function RootLayout({
+  quickview,
+  children,
+}: {
+  children: React.ReactNode;
+  quickview: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <SpeedInsights />
@@ -23,9 +29,6 @@ export default function RootLayout({ quickview, children }: { children: React.Re
           <span className="grow" />
           <Link className="hover:underline" href="/pokemon">
             Pokémon
-          </Link>
-          <Link className="hover:underline" href="/favourites">
-            Favourites
           </Link>
         </nav>
         {children}

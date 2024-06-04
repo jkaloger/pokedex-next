@@ -21,9 +21,17 @@ export function Dialog({ children }: { children: React.ReactNode }) {
   }
 
   return createPortal(
-    <dialog ref={dialogRef} className="backdrop:bg-black/30 bg-transparent" onClose={onDismiss}>
+    <dialog
+      ref={dialogRef}
+      className="backdrop:bg-black/30 bg-transparent"
+      onClose={onDismiss}
+    >
       {children}
-      <Button onClick={onDismiss} className="absolute top-0 right-0" variant="destructive">
+      <Button
+        onClick={onDismiss}
+        className="absolute top-0 right-0"
+        variant="destructive"
+      >
         <XMarkIcon className="h-6 w-6" />
       </Button>
     </dialog>,

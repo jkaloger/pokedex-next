@@ -1,5 +1,4 @@
 import { PokeList } from '@/components/pokemon/list';
-import { flagsmith } from '@/lib/features';
 
 interface Props {
   searchParams: {
