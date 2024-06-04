@@ -20,7 +20,10 @@ export const BerryDetails = async ({ id }: Props) => {
           <AvatarFallback>{berry.name[0].toUpperCase()}</AvatarFallback>
         </Avatar>
         <div className="text-center space-y-1">
-          <h3 className="text-2xl font-bold">{berry.name}</h3>
+          <h3 className="text-2xl font-bold capitalize">{berry.name}</h3>
+        </div>
+        <div className="flex flex-col gap-1 items-center">
+          <p>{item.flavor_text_entries?.[0].text}</p>
         </div>
       </CardContent>
     </Card>

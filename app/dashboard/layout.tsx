@@ -9,19 +9,15 @@ export default function DashboardLayout({
   pokemon: React.ReactNode;
 }>) {
   return (
-    <main className="container grid grid-cols-3 gap-5">
-      <Card className="col-span-1">
+    <main className="container flex flex-col gap-5">
+      <Card>
         <CardHeader className="text-xl">Nav</CardHeader>
         <CardContent className="flex flex-col gap-2">
           <Link href="/dashboard/berries">Berries</Link>
-          <Link href="/dashboard/berries">Berries</Link>
-          <Link href="/dashboard/berries">Berries</Link>
+          <Link href="/dashboard/types">Types</Link>
         </CardContent>
       </Card>
-      <Card className="col-span-2">
-        <CardHeader className="text-xl">Page.js</CardHeader>
-        <CardContent>{children}</CardContent>
-      </Card>
+      {children}
       <div className="col-span-3 flex flex-col gap-3">
         <div className="text-xl">Pokemon</div>
         {pokemon}
