@@ -11,7 +11,7 @@ export const PokeList = async ({ page }: { page: number }) => {
   const flags = await flagsmith.getEnvironmentFlags();
   const showTypes =
     override?.show_types != undefined
-      ? override?.showTypes
+      ? Boolean(override.showTypes?.valueOf())
       : flags.isFeatureEnabled('show_types');
   console.log({ override });
   const pokemonList = await getPokemon(
