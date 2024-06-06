@@ -8,8 +8,8 @@ interface Props {
 
 export default function PokemonPage({ params: { id } }: Props) {
   return (
-    <div>
-      <PokemonDetails id={id} />
+    <div className="container">
+      <PokemonDetails id={id} showMoves />
     </div>
   );
 }

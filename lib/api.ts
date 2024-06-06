@@ -16,6 +16,18 @@ export const getBerries = async (): Promise<PokeAPI.NamedAPIResourceList> => {
   return await response.json();
 };
 
+export const getMove = async (id: string): Promise<PokeAPI.Move> => {
+  const url = `${process.env.POKEAPI_URL}/move/${id}`;
+  const response = await fetch(url, { cache: 'force-cache' });
+  return await response.json();
+};
+
+export const getMoves = async (): Promise<PokeAPI.NamedAPIResourceList> => {
+  const url = `${process.env.POKEAPI_URL}/move?limit=2500`;
+  const response = await fetch(url, { cache: 'force-cache' });
+  return await response.json();
+};
+
 export const getTypes = async (): Promise<PokeAPI.NamedAPIResourceList> => {
   const url = `${process.env.POKEAPI_URL}/type`;
   const response = await fetch(url, { cache: 'force-cache' });
@@ -29,7 +41,6 @@ export const getPokemonById = async (id: string): Promise<PokeAPI.Pokemon> => {
 };
 
 export const getBerryById = async (id: string): Promise<PokeAPI.Berry> => {
-  await new Promise((resolve) => setTimeout(resolve, 250));
   const url = `${process.env.POKEAPI_URL}/berry/${id}`;
   const response = await fetch(url, { cache: 'force-cache' });
   return await response.json();

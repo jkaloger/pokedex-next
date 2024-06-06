@@ -15,6 +15,7 @@ export default function DashboardLayout({
         <CardContent className="flex flex-col gap-2">
           <Link href="/dashboard/berries">Berries</Link>
           <Link href="/dashboard/types">Types</Link>
+          <Link href="/dashboard/moves">Moves</Link>
         </CardContent>
       </Card>
       {children}

@@ -16,7 +16,6 @@ export const PokeList = async ({ page }: { page: number }) => {
     PAGE_SIZE
   );
 
-  console.log({ override });
   return (
     <div className="@container">
       <div className="grid grid-cols-1 @5xl:grid-cols-3 @2xl:grid-cols-2 gap-3">

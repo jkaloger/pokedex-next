@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { CardContent, Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { HeartFilledIcon } from '@radix-ui/react-icons';
+import Link from 'next/link';
 
 export const typeBgMap: Record<string, string> = {
   grass: 'bg-green-600',
@@ -32,18 +33,28 @@ export const typeBgMap: Record<string, string> = {
 interface Props {
   id: string;
   showTypes?: boolean;
+  showMoves?: boolean;
 }
 
-export const PokemonDetails = async ({ id, showTypes = false }: Props) => {
+export const PokemonDetails = async ({
+  id,
+  showMoves = false,
+  showTypes = false,
+}: Props) => {
   const pokemon = await getPokemonById(id);
 
   return (
     <Card className="w-full">
       <CardContent className="flex flex-col items-center gap-4 p-6">
-        <Avatar className={cn(['h-48 w-48 p-4', `bg-slate-300`])}>
-          <AvatarImage alt={pokemon.name} src={pokemon.sprites.front_default} />
-          <AvatarFallback>{pokemon.name[0].toUpperCase()}</AvatarFallback>
-        </Avatar>
+        <Link href={`/pokemon/${id}`}>
+          <Avatar className={cn(['h-48 w-48 p-4', `bg-slate-300`])}>
+            <AvatarImage
+              alt={pokemon.name}
+              src={pokemon.sprites.front_default}
+            />
+            <AvatarFallback>{pokemon.name[0].toUpperCase()}</AvatarFallback>
+          </Avatar>
+        </Link>
         <div className="text-center space-y-1 flex flex-col gap-1">
           <div>
             <p className="text-xs text-black/50 dark:text-white/50">
@@ -64,6 +75,23 @@ export const PokemonDetails = async ({ id, showTypes = false }: Props) => {
               </p>
             ))}
         </div>
+        {showMoves && (
+          <>
+            <hr className="w-2/3" />
+            <div className="flex flex-col gap-2">
+              <p>{pokemon.held_items.map((item) => item.item.name)}</p>
+              <ul className="grid-cols-3 grid gap-y-2 gap-x-10">
+                {pokemon.moves.map((move) => (
+                  <li className="list-none capitalize" key={move.move.name}>
+                    <Link href={`/move/${move.move.name}`}>
+                      {move.move.name.replaceAll('-', ' ')}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
+        )}
       </CardContent>
     </Card>
   );
