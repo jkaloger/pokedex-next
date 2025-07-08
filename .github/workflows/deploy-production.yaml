@@ -4,6 +4,9 @@ on:
 
 name: Deploy to Production
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
