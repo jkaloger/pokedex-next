@@ -1,0 +1,17 @@
+on:
+  release:
+    types: [published]
+
+name: Deploy to Production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Force push SHA to Production branch
+        uses: actions/checkout@v4
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          echo "${GITHUB_SHA}"
+          git push --force origin ${GITHUB_SHA}:production
