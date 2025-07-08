@@ -11,31 +11,42 @@ permissions:
 jobs:
   create-deployment-pr:
     runs-on: ubuntu-latest
+    env:
+      RELEASE_VERSION: ${{ github.event.release.tag_name }}
+      TARGET_COMMIT: ${{ github.event.release.target_commitish }}
+      RELEASE_BODY: ${{ github.event.release.body }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           
-      - name: Create Deployment PR
+      - name: Generate Timestamp and Branch Name
+        id: vars
+        run: |
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          BRANCH_NAME="deploy/$RELEASE_VERSION-$TIMESTAMP"
+          
+          echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          
+          echo "Release Version: $RELEASE_VERSION"
+          echo "Target Commit: $TARGET_COMMIT"
+          echo "Timestamp: $TIMESTAMP"
+          echo "Branch Name: $BRANCH_NAME"
+
+      - name: Create Deployment Branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          RELEASE_VERSION="${{ github.event.release.tag_name }}"
-          TARGET_COMMIT="${{ github.event.release.target_commitish }}"
-          RELEASE_BODY="${{ github.event.release.body }}"
-          
-          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-          BRANCH_NAME="deploy/$RELEASE_VERSION-$TIMESTAMP"
-          
           git checkout production
           git pull origin production
-          git checkout -b $BRANCH_NAME
+          git checkout -b ${{ steps.vars.outputs.branch_name }}
           
-          git reset --hard origin/$TARGET_COMMIT
+          git reset --hard $TARGET_COMMIT
           
-          git push origin $BRANCH_NAME
+          git push origin ${{ steps.vars.outputs.branch_name }}
 
       - name: Create Deployment PR
         env:
@@ -43,6 +54,8 @@ jobs:
         run: |
           gh pr create \
             --title "release: $RELEASE_VERSION" \
+            --base production \
+            --head ${{ steps.vars.outputs.branch_name }} \
             --body "## 🧑‍🚀 Production Deployment
           
           **Release:** $RELEASE_VERSION
@@ -54,6 +67,4 @@ jobs:
 
           ---
           
-          ### ⚠️ This is an automated deployment PR. Please review and approve to deploy to production." \
-            --base production \
-            --head $BRANCH_NAME
+          ### ⚠️ This is an automated deployment PR. Please review and approve to deploy to production."
