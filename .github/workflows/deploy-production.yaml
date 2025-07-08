@@ -17,6 +17,7 @@ jobs:
           ssh-key: ${{ secrets.SSH_KEY }}
       - name: Force push SHA to Production branch
         run: |
+          echo "${{ secrets.SSH_KEY }}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           echo "${GITHUB_SHA}"
