@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Force push SHA to Production branch
         uses: actions/checkout@v4
+        with:
+          ssh-key: {{ secrets.SSH_KEY }}
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
