@@ -11,50 +11,60 @@ permissions:
 jobs:
   create-deployment-pr:
     runs-on: ubuntu-latest
+    env:
+      RELEASE_VERSION: ${{ github.event.release.tag_name }}
+      TARGET_COMMIT: ${{ github.event.release.target_commitish }}
+      RELEASE_BODY: ${{ github.event.release.body }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           
-      - name: Create Deployment PR
-        env:
-            GH_TOKEN: ${{ github.token }}
+      - name: Generate Timestamp and Branch Name
+        id: vars
+        run: |
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          BRANCH_NAME="deploy/$RELEASE_VERSION-$TIMESTAMP"
+          
+          echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          
+          echo "Release Version: $RELEASE_VERSION"
+          echo "Target Commit: $TARGET_COMMIT"
+          echo "Timestamp: $TIMESTAMP"
+          echo "Branch Name: $BRANCH_NAME"
+
+      - name: Create Deployment Branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          RELEASE_VERSION="${{ github.event.release.tag_name }}"
-          TARGET_COMMIT="${{ github.event.release.target_commitish }}"
-          RELEASE_BODY="${{ github.event.release.body }}"
-          
-          # Create a unique branch name
-          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-          BRANCH_NAME="deploy/$RELEASE_VERSION-$TIMESTAMP"
-          
-          # Create new branch from production
           git checkout production
           git pull origin production
-          git checkout -b $BRANCH_NAME
+          git checkout -b ${{ steps.vars.outputs.branch_name }}
           
-          # Reset to the target commit (this is the key part)
           git reset --hard origin/$TARGET_COMMIT
           
-          # Push the branch
-          git push origin $BRANCH_NAME
-          
-          # Create PR using GitHub CLI
+          git push origin ${{ steps.vars.outputs.branch_name }}
+
+      - name: Create Deployment PR
+        env:
+            GH_TOKEN: ${{ github.token }}
+        run: |
           gh pr create \
-            --title "🚀 Deploy $RELEASE_VERSION to Production" \
-            --body "## Release Deployment
+            --title "release: $RELEASE_VERSION" \
+            --base production \
+            --head ${{ steps.vars.outputs.branch_name }} \
+            --body "## 🧑‍🚀 Production Deployment
           
           **Release:** $RELEASE_VERSION
-          **Target Commit:** $TARGET_COMMIT
-          **Release Notes:**
+          **Target:** $TARGET_COMMIT
+
+          ## 📝 Release Notes
+          
           $RELEASE_BODY
+
+          ---
           
-          This PR will update production to match the exact state of commit \`$TARGET_COMMIT\`.
-          
-          **⚠️ Important:** This is an automated deployment PR. Please review and approve to deploy to production." \
-            --base production \
-            --head $BRANCH_NAME
+          ### ⚠️ This is an automated deployment PR. Please review and approve to deploy to production."
