@@ -6,19 +6,55 @@ name: Deploy to Production
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
-  deploy:
+  create-deployment-pr:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
-          ssh-key: ${{ secrets.SSH_KEY }}
-      - name: Force push SHA to Production branch
+          fetch-depth: 0
+          
+      - name: Create Deployment PR
         run: |
-          echo "${{ secrets.SSH_KEY }}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          echo "${GITHUB_SHA}"
-          git push --force origin ${GITHUB_SHA}:production
+          
+          # Get release details
+          RELEASE_VERSION="${{ github.event.release.tag_name }}"
+          TARGET_COMMIT="${{ github.event.release.target_commitish }}"
+          RELEASE_BODY="${{ github.event.release.body }}"
+          
+          # Create a unique branch name
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          BRANCH_NAME="deploy/$RELEASE_VERSION-$TIMESTAMP"
+          
+          # Create new branch from production
+          git checkout production
+          git pull origin production
+          git checkout -b $BRANCH_NAME
+          
+          # Reset to the target commit (this is the key part)
+          git reset --hard $TARGET_COMMIT
+          
+          # Push the branch
+          git push origin $BRANCH_NAME
+          
+          # Create PR using GitHub CLI
+          gh pr create \
+            --title "🚀 Deploy $RELEASE_VERSION to Production" \
+            --body "## Release Deployment
+          
+          **Release:** $RELEASE_VERSION
+          **Target Commit:** $TARGET_COMMIT
+          **Release Notes:**
+          $RELEASE_BODY
+          
+          This PR will update production to match the exact state of commit \`$TARGET_COMMIT\`.
+          
+          **⚠️ Important:** This is an automated deployment PR. Please review and approve to deploy to production." \
+            --base production \
+            --head $BRANCH_NAME \
+            --label "deployment,automated"
