@@ -22,7 +22,7 @@ export default function RootLayout({ quickview, children }: { children: React.Re
           </Link>
           <span className="grow" />
           <Link className="hover:underline" href="/pokemon">
-            Pokémon
+            Pokémon (Hi)
           </Link>
           <Link className="hover:underline" href="/favourites">
             Favourites
