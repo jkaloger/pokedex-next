@@ -22,7 +22,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          # Get release details
           RELEASE_VERSION="${{ github.event.release.tag_name }}"
           TARGET_COMMIT="${{ github.event.release.target_commitish }}"
           RELEASE_BODY="${{ github.event.release.body }}"
@@ -37,7 +36,7 @@ jobs:
           git checkout -b $BRANCH_NAME
           
           # Reset to the target commit (this is the key part)
-          git reset --hard $TARGET_COMMIT
+          git reset --hard origin/$TARGET_COMMIT
           
           # Push the branch
           git push origin $BRANCH_NAME
