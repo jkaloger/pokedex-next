@@ -11,11 +11,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Force push SHA to Production branch
+      - name: Checkout Repo
         uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_KEY }}
-      - run: |
+      - name: Force push SHA to Production branch
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           echo "${GITHUB_SHA}"
