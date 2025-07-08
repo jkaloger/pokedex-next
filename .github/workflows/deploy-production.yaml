@@ -44,7 +44,7 @@ jobs:
           git pull origin production
           git checkout -b ${{ steps.vars.outputs.branch_name }}
           
-          git reset --hard $TARGET_COMMIT
+          git reset --hard origin/$TARGET_COMMIT
           
           git push origin ${{ steps.vars.outputs.branch_name }}
 
