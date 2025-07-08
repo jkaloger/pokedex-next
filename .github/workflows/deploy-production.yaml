@@ -57,5 +57,4 @@ jobs:
           
           **⚠️ Important:** This is an automated deployment PR. Please review and approve to deploy to production." \
             --base production \
-            --head $BRANCH_NAME \
-            --label "deployment,automated"
+            --head $BRANCH_NAME
