@@ -12,6 +12,7 @@ jobs:
   create-deployment-pr:
     runs-on: ubuntu-latest
     env:
+      PRODUCTION_BRANCH: "production"
       RELEASE_VERSION: ${{ github.event.release.tag_name }}
       TARGET_COMMIT: ${{ github.event.release.target_commitish }}
       RELEASE_BODY: ${{ github.event.release.body }}
@@ -40,8 +41,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          git checkout production
-          git pull origin production
+          git checkout $PRODUCTION_BRANCH
+          git pull origin $PRODUCTION_BRANCH
           git checkout -b ${{ steps.vars.outputs.branch_name }}
           
           git reset --hard origin/$TARGET_COMMIT
